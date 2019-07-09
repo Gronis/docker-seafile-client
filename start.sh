@@ -8,6 +8,32 @@ DATA_DIR="${DATA_DIR:-/data}"
 SEAFILE_UID="${SEAFILE_UID:-1000}"
 SEAFILE_GID="${SEAFILE_GID:-1000}"
 
+start_seafile(){
+  retries=5
+  count=0
+  su - seafile -c "seaf-cli start"
+  set +e
+  while :
+  do
+    su - seafile -c "seaf-cli status"
+    exit=$?
+    wait=$((2 ** $count))
+    count=$(($count + 1))
+    if [ $exit -eq 0 ]; then
+      echo "exiting"
+      return 0
+    fi
+    if [ $count -lt $retries ]; then
+      echo "Retry $count/$retries exited $exit, retrying in $wait seconds..."
+      sleep $wait
+    else
+      echo "Retry $count/$retries exited $exit, no more retries left."
+      return $exit
+    fi
+  done
+  return 0
+}
+
 get () {
     NAME="$1"
     JSON="$2"
@@ -72,6 +98,6 @@ keep_in_foreground() {
 }
 
 setup_uid
-su - seafile -c "seaf-cli start"
+start_seafile
 setup_lib_sync
 keep_in_foreground
