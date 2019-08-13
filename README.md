@@ -10,7 +10,7 @@ See docker-compose how to use.
  - USERNAME=username                 Your account username (credentials)
  - PASSWORD=password                 Your account password (credentials)
  - DATA_DIR=directory-path-to-sync   The path where to put the files
-
+ - CONNECT_RETRIES=number            How many times try to connect to daemon. Higher value is useful on slow boxes. Default is 5
 ## How to find library id:
 
 <img src="imgs/help.png"/>
