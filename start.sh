@@ -7,9 +7,10 @@ set -o pipefail
 DATA_DIR="${DATA_DIR:-/data}"
 SEAFILE_UID="${SEAFILE_UID:-1000}"
 SEAFILE_GID="${SEAFILE_GID:-1000}"
+CONNECT_RETRIES="${CONNECT_RETRIES:-5}"
 
 start_seafile(){
-  retries=5
+  retries="${CONNECT_RETRIES}"
   count=0
   su - seafile -c "seaf-cli start"
   set +e
