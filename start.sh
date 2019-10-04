@@ -39,7 +39,8 @@ get () {
     NAME="$1"
     JSON="$2"
     # Tries to regex setting name from config. Only works with strings for now
-    VALUE=$(echo $JSON | grep -Po '"'"$NAME"'"\s*:\s*.*?[^\\]"+,*' | sed -n -e 's/.*: *"\(.*\)",*/\1/p')
+    VALUE=$(echo $JSON | grep -Po '"'"$NAME"'"\s*:\s*.*?[^\\]"+,*' | sed -n -e 's/.*: *"\(.*\)",*/\1/p'|sed -e 's#[\(\)]#\\\0#g')
+
     # Use eval to ensure that nested expressens are executed (config points to environment var)
     eval echo $VALUE
 }
@@ -59,7 +60,7 @@ setup_lib_sync(){
       LIB="${LIBS[i]}"
       LIB_JSON=$(curl -G -H "Authorization: Token $TOKEN" -H 'Accept: application/json; indent=4' ${SERVER_URL}:${SERVER_PORT}/api2/repos/${LIB}/ 2> /dev/null)
       LIB_NAME=$(get name "$LIB_JSON")
-      LIB_NAME_NO_SPACE=${LIB_NAME// /_}
+      LIB_NAME_NO_SPACE=$(echo $LIB_NAME|sed 's/[ \(\)]/_/g')
       LIB_DIR=${DATA_DIR}/${LIB_NAME_NO_SPACE}
       set +e
       LIB_IN_SYNC=$(echo "$LIBS_IN_SYNC" | grep "$LIB")
