@@ -94,6 +94,7 @@ keep_in_foreground() {
       pkill -0 -f "${SEAFILE_PROC}"
       sleep 1
     done
+    date +"%Y-%m-%d %H:%M:%S"
     su - seafile -c "seaf-cli status"
     sleep 5
   done
