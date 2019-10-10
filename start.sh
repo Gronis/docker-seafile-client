@@ -96,7 +96,7 @@ keep_in_foreground() {
     done
     date +"%Y-%m-%d %H:%M:%S"
     su - seafile -c "seaf-cli status"
-    sleep 5
+    sleep 60
   done
 }
 
