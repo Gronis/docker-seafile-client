@@ -53,6 +53,10 @@ setup_lib_sync(){
     fi
     TOKEN_JSON=$(curl -d "username=$USERNAME" -d "password=$PASSWORD" ${SERVER_URL}:${SERVER_PORT}/api2/auth-token/ 2> /dev/null)
     TOKEN=$(get token "$TOKEN_JSON")
+    if [ "$TOKEN" == "" ]; then
+      echo "Unable to get token. Check your user credentials, server url and server port."
+      return
+    fi
     LIBS_IN_SYNC=$(su - seafile -c 'seaf-cli list')
     LIBS=(${LIBRARY_ID//:/ })
     for i in "${!LIBS[@]}"
