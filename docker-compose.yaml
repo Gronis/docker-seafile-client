@@ -2,7 +2,7 @@ version: '2'
 services:
   seafile-client:
     restart: always
-    image: gronis:seafile-client
+    image: gronis/seafile-client
     container_name: seafile-client
     environment:
       - LIBRARY_ID=<your-library-id-here>
