@@ -73,7 +73,7 @@ setup_lib_sync(){
         echo "Syncing $LIB_NAME"
         mkdir -p $LIB_DIR
         chown seafile:seafile -R $LIB_DIR
-        su - seafile -c "seaf-cli sync -l \"$LIB\" -s \"${SERVER_URL}:${SERVER_PORT}\" -d \"$LIB_DIR\" -u \"$USERNAME\" -p \"$PASSWORD\""
+        su - seafile -c "seaf-cli sync -l \"\"$LIB\"\" -s \"${SERVER_URL}:${SERVER_PORT}\" -d \"$LIB_DIR\" -u \"$USERNAME\" -p \"$PASSWORD\""
       fi
     done
 }
