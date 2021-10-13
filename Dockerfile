@@ -1,10 +1,10 @@
-FROM debian:stretch-slim
+FROM debian:bullseye-slim
 
-RUN apt-get update && apt-get install gnupg -y && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8756C4F765C9AC3CB6B85D62379CE192D401AB61 && \
-    echo deb http://deb.seadrive.org stretch main | tee /etc/apt/sources.list.d/seafile.list && \
+RUN apt-get update && apt-get install gnupg curl -y && \
+    curl https://linux-clients.seafile.com/seafile.asc -o /usr/share/keyrings/seafile-keyring.asc && \
+    echo deb [arch=amd64 signed-by=/usr/share/keyrings/seafile-keyring.asc] https://linux-clients.seafile.com/seafile-deb/bullseye/ stable main | tee /etc/apt/sources.list.d/seafile.list && \
     apt-get update -y && \
-    apt-get install -y seafile-cli procps curl grep && \
+    apt-get install -y seafile-cli procps grep && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
