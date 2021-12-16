@@ -11,6 +11,8 @@ See docker-compose how to use.
  - PASSWORD=password                 Your account password (credentials)
  - DATA_DIR=directory-path-to-sync   The path where to put the files
  - CONNECT_RETRIES=number            How many times try to connect to daemon. Higher value is useful on slow boxes. Default is 5
+ - DISABLE_VERIFY_CERTIFICATE=true   Disable certificate validation. In case you connect to a server with a self-signed certificate
+                                     ! Do not use to connect to public server on the internet ! Use a trusted certificate provider instead.
 ## How to find library id:
 
 <img src="imgs/help.png"/>

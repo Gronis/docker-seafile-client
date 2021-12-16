@@ -8,12 +8,14 @@ DATA_DIR="${DATA_DIR:-/data}"
 SEAFILE_UID="${SEAFILE_UID:-1000}"
 SEAFILE_GID="${SEAFILE_GID:-1000}"
 CONNECT_RETRIES="${CONNECT_RETRIES:-5}"
+DISABLE_VERIFY_CERTIFICATE="${DISABLE_VERIFY_CERTIFICATE:-false}"
 
 start_seafile(){
   retries="${CONNECT_RETRIES}"
   count=0
-  su - seafile -c "seaf-cli start"
   set +e
+  su - seafile -c "seaf-cli start"
+  su - seafile -c "seaf-cli config -k disable_verify_certificate -v $DISABLE_VERIFY_CERTIFICATE"
   while :
   do
     su - seafile -c "seaf-cli status"
@@ -32,6 +34,7 @@ start_seafile(){
       return $exit
     fi
   done
+  set -e
   return 0
 }
 
