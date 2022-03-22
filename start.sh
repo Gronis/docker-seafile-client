@@ -7,6 +7,7 @@ set -o pipefail
 DATA_DIR="${DATA_DIR:-/data}"
 SEAFILE_UID="${SEAFILE_UID:-1000}"
 SEAFILE_GID="${SEAFILE_GID:-1000}"
+SEAFILE_UMASK="${SEAFILE_UMASK:-022}"
 CONNECT_RETRIES="${CONNECT_RETRIES:-5}"
 DISABLE_VERIFY_CERTIFICATE="${DISABLE_VERIFY_CERTIFICATE:-false}"
 
@@ -79,6 +80,8 @@ setup_lib_sync(){
 }
 
 setup_uid(){
+    # Setup umask
+    umask "${SEAFILE_UMASK}"
     # Setup user id
     if [ ! "$(id -u seafile)" -eq "${SEAFILE_UID}" ]; then
         # Change the SEAFILE_UID
