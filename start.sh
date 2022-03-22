@@ -42,10 +42,7 @@ get () {
     NAME="$1"
     JSON="$2"
     # Tries to regex setting name from config. Only works with strings for now
-    VALUE=$(echo $JSON | grep -Po '"'"$NAME"'"\s*:\s*.*?[^\\]"+,*' | sed -n -e 's/.*: *"\(.*\)",*/\1/p'|sed -e 's#[\(\)]#\\\0#g')
-
-    # Use eval to ensure that nested expressens are executed (config points to environment var)
-    eval echo $VALUE
+    echo $JSON | grep -Po '"'"$NAME"'"\s*:\s*.*?[^\\]"+,*' | sed -n -e 's/.*: *"\(.*\)",*/\1/p'
 }
 
 setup_lib_sync(){
@@ -82,11 +79,18 @@ setup_lib_sync(){
 }
 
 setup_uid(){
-    # Setup user/group ids
+    # Setup user id
     if [ ! "$(id -u seafile)" -eq "${SEAFILE_UID}" ]; then
         # Change the SEAFILE_UID
-        usermod -o -u "${SEAFILE_UID}" -g "${SEAFILE_GID}" seafile
+        usermod -o -u "${SEAFILE_UID}" seafile
     fi
+    # Setup group id
+    if [ ! "$(id -g seafile)" -eq "${SEAFILE_GID}" ]; then
+        # Change the SEAFILE_UID
+        groupmod -o -g "${SEAFILE_GID}" seafile
+    fi
+    id seafile
+    echo "UID='${SEAFILE_UID}' GID='${SEAFILE_GID}'"
 }
 
 keep_in_foreground() {
