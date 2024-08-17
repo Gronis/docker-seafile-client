@@ -1,0 +1,2 @@
+There is a more active client here:
+https://gitlab.com/florian.anceau-oss/docker-seafile-client

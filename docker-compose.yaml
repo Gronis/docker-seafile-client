@@ -2,7 +2,12 @@ version: '2'
 services:
   seafile-client:
     restart: always
-    image: gronis/seafile-client
+    build:
+        # Context should not be a folder that contains all of your seafile librariers
+        # otherwise it will take docker forever to find the Dockerfile (or something).
+        # context should point to the folder that contains the Dockerfile and start.sh.
+        context: ./docker-seafile-client
+    image: seafile-client
     container_name: seafile-client
     environment:
       - LIBRARY_ID=<your-library-id-here>
@@ -10,6 +15,6 @@ services:
       - SERVER_PORT=<server-port>
       - USERNAME=<username>
       - PASSWORD=<password>
-      - DATA_DIR=<directory-path-to-sync>
     volumes:
-      - <host-volume-path>:<directory-path-to-sync>
+      - <library-host-volume-path>:/libraries
+      - <sync-state-host-volume-path>:/seafile-state
